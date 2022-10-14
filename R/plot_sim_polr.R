@@ -1,7 +1,7 @@
 #' Simulate and plot data from a polr model
 #'
 #' @param mod a \code{polr} model; weighted fits are not supported
-#' @param n number of simulations; default is 50
+#' @param nsim Number of simulations for \code{simulate} function; default is 50
 #' @param alpha transparency setting for simulated data points; default is 0.25. Ranges from 0 to 1.
 #' @param width the jitter width; default is 0.1
 #'
@@ -15,9 +15,9 @@
 #' \dontrun{
 #' library(carData)
 #' m <- MASS::polr(poverty ~ gender + religion + degree, data=WVS)
-#' sim_polr(m)
+#' plot_sim_polr(m)
 #' }
-sim_polr <- function(mod, n = 50, alpha = 0.15, width = 0.1){
+plot_sim_polr <- function(mod, nsim = 50, alpha = 0.15, width = 0.1){
   # get response variable
   dv <- insight::find_response(mod)
   # observed proportions of response
@@ -30,7 +30,7 @@ sim_polr <- function(mod, n = 50, alpha = 0.15, width = 0.1){
       proportions() |>
       as.data.frame(responseName = "P")
   }
-  s <- simulate(mod, nsim = n)
+  s <- simulate(mod, nsim = nsim)
   s_df <- lapply(s, p_df) |>
     do.call(what = "rbind",args = _)
   ggplot2::ggplot() +
